@@ -1,0 +1,133 @@
+!!site-1
+
+en
+conf t
+!
+line con 0
+logging sync
+!
+no ip domain lookup
+!
+hostname Site-1
+!
+int g0/0
+ip add 11.1.1.1 255.255.255.0
+no shut
+!
+int l1 
+ip add 10.1.1.1 255.255.255.0
+!
+ip route 0.0.0.0 0.0.0.0 11.1.1.10
+!
+do wr
+!
+
+!!site-2
+
+en
+conf t
+!
+line con 0
+logging sync
+!
+no ip domain lookup
+!
+hostname Site-2
+!
+int g0/1
+ip add 12.1.1.2 255.255.255.0
+no shut
+!
+int l1
+ip add 10.2.2.2 255.255.255.0
+!
+ip route 0.0.0.0 0.0.0.0 12.1.1.10
+!
+do wr
+!
+ 
+ 
+!!Isp
+
+en
+conf t
+!
+line con 0
+logging sync
+!
+no ip domain lookup
+!
+hostname ISP
+!
+int g0/0
+ip add 11.1.1.10 255.255.255.0
+no shut
+
+int g0/1
+ip add 12.1.1.10 255.255.255.0
+no shu
+!
+do wr
+!
+ 
+
+!-----------IKEv2 Policy Based S2S VPN Without NAT-T------------
+
+!!Site-1
+
+crypto isakmp policy 10
+hash md5
+auth pre
+group 5
+encr des
+!
+crypto isakmp policy 20
+hash sha
+auth pre
+group 15
+encr aes
+!
+crypto isakmp key cisco add 12.1.1.2
+!
+crypto ipsec transform-set TSET esp-aes esp-sha-hmac
+!
+access-list 100 permit ip host 10.1.1.1 host 10.2.2.2
+!
+crypto map CMAP 10 ipsec-isakmp
+set peer 12.1.1.2
+set transform-set TSET
+match add 100
+!
+int g0/0
+crypto map CMAP
+!
+
+
+!!Site-2
+
+crypto isakmp policy 10
+hash md5
+auth pre
+group 5
+encr des
+!
+crypto isakmp policy 20
+hash sha
+auth pre
+group 15
+encr aes
+!
+crypto isakmp key cisco add 11.1.1.1
+!
+crypto ipsec transform-set TSET esp-aes esp-sha-hmac
+!
+access-list 100 permit ip host 10.2.2.2 host 10.1.1.1
+!
+crypto map CMAP 10 ipsec-isakmp
+set peer 11.1.1.1
+set transform-set TSET
+match add 100
+!
+int g0/1
+crypto map CMAP
+!
