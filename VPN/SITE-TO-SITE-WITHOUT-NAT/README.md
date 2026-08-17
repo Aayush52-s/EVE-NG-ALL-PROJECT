@@ -1,48 +1,65 @@
-# 🔐 SITE-TO-SITE IPsec VPN — WITHOUT NAT-T
+# 🔐 Site-to-Site IPsec VPN — Without NAT-T
 
 ## 📌 Project Overview
 
-This project demonstrates a **policy-based Site-to-Site IPsec VPN** between two sites through an ISP network.
+This project demonstrates the configuration and verification of a
+policy-based Site-to-Site IPsec VPN between two remote sites through
+an ISP network.
 
-The VPN provides secure communication between the private LAN networks of Site-1 and Site-2.
-
-The project demonstrates:
-
-- IKEv1 negotiation
-- ISAKMP
-- Pre-shared key authentication
-- IPsec
-- ESP encryption
-- Extended ACL
-- Crypto Map
-- Site-to-Site VPN
-- VPN verification
-- Wireshark packet analysis
-- VPN operation without NAT-T
+The VPN provides secure communication between the private networks
+of Site-1 and Site-2 using IKEv1, IPsec, ESP, Extended ACLs and
+Crypto Maps.
 
 ---
 
-# 🏗️ 1. VPN Network Topology
+## 🎯 Project Objectives
 
-The following topology represents the Site-to-Site VPN environment.
+- Configure Site-to-Site IPsec VPN
+- Configure IKEv1 Phase 1
+- Configure ISAKMP
+- Configure pre-shared key authentication
+- Configure IPsec Phase 2
+- Configure ESP encryption
+- Configure Extended ACL for interesting traffic
+- Configure Crypto Map
+- Establish VPN communication between two sites
+- Verify encrypted traffic using Wireshark
+- Demonstrate Site-to-Site VPN without NAT-T
 
-Site-1 and Site-2 communicate through an ISP router. The VPN tunnel is established between the two VPN endpoint routers.
+---
 
-![Site-to-Site VPN Topology](vpn-topology.png)
+# 🏗️ 1. Network Topology
 
-### 🔎 Topology Description
+The following topology represents the complete Site-to-Site VPN
+environment.
+
+Site-1 and Site-2 communicate through an ISP network.
+
+![VPN Topology](01-vpn-topology.png)
+
+### Topology Components
+
+| Component | Function |
+|---|---|
+| Site-1 Router | VPN Endpoint |
+| Site-2 Router | VPN Endpoint |
+| ISP Router | WAN Connectivity |
+| Site-1 LAN | Private Network |
+| Site-2 LAN | Private Network |
+
+### Traffic Flow
 
 ```text
 Site-1 LAN
-    |
+    ↓
 Site-1 Router
-    |
-    | WAN
-    |
-ISP Router
-    |
-    | WAN
-    |
+    ↓
+IPsec VPN
+    ↓
+ISP Network
+    ↓
+IPsec VPN
+    ↓
 Site-2 Router
-    |
+    ↓
 Site-2 LAN
