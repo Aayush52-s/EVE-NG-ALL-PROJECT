@@ -8,7 +8,7 @@ The VPN uses **IKEv1** for Phase 1 negotiation and **IPsec/ESP** for encrypted d
 
 ### 🏗️ Network Topology
 
-![VPN Topology](VPN/SITE-TO-SITE-WITHOUT-NAT/vpn-topology.png.png)
+![VPN Topology](VPN/SITE-TO-SITE-WITHOUT-NAT/vpn-topology.png)
 
 ### 🌐 IP Addressing
 
